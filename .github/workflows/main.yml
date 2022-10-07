@@ -1,0 +1,30 @@
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19
+      
+      - name: Run tests
+        run: |
+          go test ./... -coverprofile=test.cov
+
+      - name: Run test coverage check
+        uses: engelmi/gh-action-test@v1.13
+        with:
+          version: "v0.0.0-beta"
+          args: "-coverfile=test.cov -outfile=out.tmp -v=3"
+
+      - name: Upload coverage results
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: out.tmp

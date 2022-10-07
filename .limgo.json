@@ -1,0 +1,10 @@
+{
+	"coverageThreshold": {
+		"global": {
+			"statements": 90
+		}
+	},
+	"excludes": [
+		"vendor/.*"
+	]
+}
